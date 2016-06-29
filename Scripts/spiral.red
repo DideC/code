@@ -4,14 +4,13 @@ Red [
 	Needs:	 'View
 	Date:    "25/03/2016"
 	License: "MIT"
-	Notes:	 "Ported from Rebol to Red by Pekr, optimized by Nenad Rakocevic."
+	Notes:	 "Ported from Rebol to Red by Pekr, optimized by Nenad Rakocevic and DideC."
 ]
 
 system/view/auto-sync?: no
 
 size: 700x700
 ff: 0
-mod: 1
 
 make-spiral: func [wd angle buffer /local offset][
 	ff: ff + 20
@@ -22,20 +21,20 @@ make-spiral: func [wd angle buffer /local offset][
 	repeat i 360 [
 		append buffer as-pair
 			offset/x + (i * sine angle + (wd * i))
-			offset/y + (i * cosine angle + (wd * I))
+			offset/y + (i * cosine angle + (wd * i))
 	]
 ]
 
 tv: angle: 0
 color: random 255.255.255
-d: '-
 xx: random 20.20.20
+op: :+
 
 view [
 	canvas: base size all-over white rate 60 on-time [
-		if color < 30.30.30 [d: '+ xx: random 20.20.20]
-		if color > 200.200.200 [d: '- xx: random 20.20.20]
-		color: either d = '+ [color + xx][color - xx]
+		if color < 30.30.30 [op: :+  xx: random 20.20.20]
+		if color > 200.200.200 [op: :-  xx: random 20.20.20]
+		color: color op xx
 		tv: tv - 0.2
 		angle: angle - 1
 		
